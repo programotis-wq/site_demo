@@ -1,0 +1,300 @@
+/* =========================================================
+   styles.css
+   Feuille de style unique du site (fusion du <style> intégré
+   dans les pages HTML et du fichier CSS séparé).
+   À inclure sur toutes les pages avec :
+     <link rel="stylesheet" href="styles.css" />
+   ========================================================= */
+
+/* ========== 1. Typographie de base ========== */
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Police script pour le branding / logo texte / grands titres */
+.logo-text,
+.brand,
+h1.site-title {
+  font-family: "Story Script", cursive;
+  font-weight: 400; /* la plupart des polices script n'ont pas besoin de gras */
+}
+
+.logo-text {
+  line-height: 1;
+  white-space: nowrap;
+}
+
+h2 {
+  letter-spacing: 0.2px;
+}
+
+/* ========== 2. Header / Navbar ========== */
+
+header a,
+.navbar a.nav-link {
+  text-decoration: none;
+}
+
+header ul,
+.navbar ul,
+.offcanvas ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* Empêche la navbar de se déformer */
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  min-height: 60px;
+}
+
+/* Groupement des boutons à droite */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+/* Logo dans la navbar */
+.navbar-brand img.logo {
+  height: 100px;
+  width: auto;
+}
+
+.offcanvas-header .navbar-brand img.logo {
+  height: 36px;
+}
+
+.logo-nav {
+  height: 56px;
+  width: auto;
+  display: block;
+}
+@media (max-width: 992px) { .logo-nav { height: 48px; } }
+@media (max-width: 576px) { .logo-nav { height: 40px; } }
+
+/* Icône menu spécifique */
+.menu-icons {
+  height: 24px;
+  width: 24px;
+}
+
+/* ========== 3. Formulaires (dropdown "Créer un profil", etc.) ========== */
+
+.dropdown-menu .form-label { font-size: .85rem; }
+.dropdown-menu .invalid-feedback { font-size: .8rem; }
+.dropdown-menu { --bs-dropdown-link-hover-bg: transparent; }
+
+/* ========== 4. Badges de statut ========== */
+
+/* Badge ouvert/fermé (transition douce) */
+#openStatus.badge {
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.status-open {
+  background-color: #198754; /* vert Bootstrap */
+  color: #fff;
+  font-weight: 600;
+}
+
+.status-closed {
+  background-color: #dc3545; /* rouge Bootstrap */
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Panier : cacher le compteur si 0 */
+#cartCount.hidden { display: none; }
+
+/* ========== 5. Cartes / Magasin ========== */
+
+.card-body { padding: 0; margin: 10px; }
+.card { border: 2px solid #3ee496; }
+
+.card-img-top {
+  width: 100px;
+  height: auto; /* ajuster selon le design souhaité */
+}
+
+/* Carte des horaires */
+.card-horaire { max-width: 420px; text-align: center; }
+
+.card-horaire .logo-lac {
+  display: block;
+  width: 260px;
+  height: auto;
+  margin: 4px auto 0; /* rapproché du texte */
+  max-width: 100%;
+}
+
+.card-horaire .card-body {
+  padding-top: 0;
+  padding-bottom: 4px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-top: 0 !important;
+}
+
+.card-horaire .card-body > ul { padding: 8px 12px; }
+.card-horaire ul { margin: 0; }
+.card-horaire .list-unstyled { margin: 0; padding: 0; }
+
+.card-horaire li { padding-top: 2px; padding-bottom: 2px; line-height: 1.2; }
+.card-horaire li span,
+.card-horaire li strong { margin: 0; line-height: 1.1 !important; }
+
+/* ========== 6. Logos des départements / partenaires ========== */
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+}
+
+
+
+
+/* ========== 7. Accessibilité ========== */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+/* ========== 8. Utilitaires ========== */
+
+/* Évite que la navbar sticky recouvre l'ancre au défilement entre sections */
+section + section {
+  scroll-margin-top: 80px;
+}
+
+/* ========== 9. Page "Conditions d'utilisation" ========== */
+
+main {
+  max-width: 960px;
+}
+
+ol li {
+  margin-bottom: .75rem;
+}
+
+.conditions {
+  display: flex;
+  justify-content: center;
+}
+
+.conditions label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-img {
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  object-fit: cover;   /* remplit le cadre, rogne l'excédent, jamais déformée */
+}
+
+.product-img {
+  width: 100%;
+  max-width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.card {
+  max-width: 220px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  justify-items: center;
+}
+
+/* Champ facultatif vide : pas de coche verte */
+.was-validated #unit:placeholder-shown {
+  border-color: var(--bs-border-color);
+  background-image: none;
+  padding-right: .5rem;
+}
+
+.titre{
+  text-align: center;
+}
+
+/* =========================================================
+   Effet d'eau du logo — Dépanneur du Lac-Moustique
+   ========================================================= */
+
+/* Le logo devient le « lac » sur lequel les ondes se forment */
+.logo-text {
+  position: relative;   /* les ondes se placent par rapport au logo */
+  isolation: isolate;   /* les ondes restent derrière le texte */
+  display: inline-block;
+}
+
+/* ===== Une onde ===== */
+.onde {
+  position: absolute;
+  left: var(--ox);
+  top: var(--oy);
+  width: var(--taille);
+  height: var(--taille);
+  pointer-events: none;
+  z-index: -1;
+  /* aplatie verticalement : la surface du lac vue en perspective */
+  transform: translate(-50%, -50%) scale(0, 0);
+  animation: onde-sepropager var(--duree) ease-out var(--delai) forwards;
+}
+
+/* Relief de la vaguelette : deux anneaux décalés */
+.onde::before,
+.onde::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: var(--epaisseur) solid;
+}
+/* Flanc ombré, décalé vers le bas */
+.onde::before {
+  border-color: rgba(4, 12, 20, calc(var(--force) * .85));
+  transform: translate(1px, 3px);
+  filter: blur(.7px);
+}
+/* Crête éclairée, décalée vers le haut */
+.onde::after {
+  border-color: rgba(225, 245, 255, var(--force));
+  transform: translate(-1px, -2px);
+  filter: blur(.3px);
+  box-shadow: 0 0 5px rgba(150, 210, 255, calc(var(--force) * .5));
+}
+
+@keyframes onde-sepropager {
+  0%   { opacity: 1;  transform: translate(-50%, -50%) scale(0, 0); }
+  55%  { opacity: .9; }
+  100% { opacity: 0;  transform: translate(-50%, -50%) scale(1, .4); }
+}
+
+/* Moins d'animations demandées : aucune onde */
+@media (prefers-reduced-motion: reduce) {
+  .onde { display: none; }
+}

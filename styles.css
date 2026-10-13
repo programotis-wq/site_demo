@@ -1,0 +1,621 @@
+/* =========================================================
+   styles.css : tout le CSS du site (anciennement dans le <style> de chaque page)
+   À inclure dans chaque page, après Bootstrap et barre.css :
+     <link rel="stylesheet" href="styles.css" />
+   Image de fond : si la page ne dit rien, c'est image/depanneur.jpg.
+   Pour changer l'image d'une page, dans cette page seulement :
+     <style> :root { --fond-photo: url("image/boucherie.png"); } </style>
+   ========================================================= */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: "Nunito", sans-serif;
+  /* image de fond : celle de la page (variable --fond-photo), sinon la photo du dépanneur */
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    var(--fond-photo, url("image/depanneur.jpg")) center / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  margin-top: 150px;
+  padding: 16px;
+  color: #fff;
+  text-align: center;
+}
+
+.scene {
+  width: 200px;
+  height: 240px;
+  margin: auto;
+  perspective: 1000px;
+}
+
+.anneau {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: translateZ(-240px);
+  transition: transform 0.6s ease;
+}
+
+.carte {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 3px solid #fff;
+  color: #fff;
+  font-size: 1.3rem;
+  backface-visibility: hidden;
+  transform: rotateY(calc(var(--i) * 51.4286deg)) translateZ(240px);
+  text-align: center;
+}
+
+.carte span {
+  font-size: 3rem;
+}
+
+/* Icônes à traits fins : renforce la visibilité */
+.icone-fine,
+.carte img,
+.gros-plan > span img {
+  filter: drop-shadow(0 0 0.5px #fff) drop-shadow(0 0 0.5px #fff);
+}
+
+.c1 {
+  background: #3e505a;
+}
+.c2 {
+  background: #3e505a;
+}
+.c3 {
+  background: #3e505a;
+}
+.c4 {
+  background: #3e505a;
+}
+.c5 {
+  background: #3e505a;
+}
+.c6 {
+  background: #3e505a;
+}
+.c7 {
+  background: #3e505a;
+}
+
+.commandes {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.commandes button {
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  border: none;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: #3e505a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.voile {
+  position: fixed;
+  inset: 0;
+  z-index: 1030; /* au-dessus du header (Bootstrap : 1020), sous le panier et les fenêtres Bootstrap */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.voile.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gros-plan {
+  width: min(80vw, 420px);
+  height: min(60vh, 500px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  border-radius: 24px;
+  color: #fff;
+  font-size: 1.3rem; /* même taille de titre que sur la carte du carrousel */
+  text-align: center;
+  justify-content: flex-start;
+  padding: 8px 20px 90px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden; /* le mini-carrousel déborde en 3D : pas de barre horizontale */
+}
+
+.gros-plan > span {
+  font-size: 3rem; /* même logo que sur la carte du carrousel */
+  line-height: 1.1;
+}
+
+.fenetre {
+  position: relative;
+  transform: scale(0.3);
+  transition: transform 0.4s ease;
+}
+
+.voile.visible .fenetre {
+  transform: scale(1);
+}
+
+.fermer {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #3e505a;
+  cursor: pointer;
+}
+
+.tuiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+.tuile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.tuile img {
+  width: 48px;
+  height: 48px;
+}
+.tuile img.portrait {
+  border-radius: 50%;
+  object-fit: cover;
+}
+.tuile:hover {
+  background:#3e505a;
+}
+
+
+.promo {
+  margin: 12px 0 0;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #d69d2e;
+  color: #1b1b1b;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* Carte photo plein écran (ex. Barbotine) : passe par-dessus le zoom */
+.voile-photo {
+  z-index: 1100; /* au-dessus du header (Bootstrap : 1020) */
+}
+.carte-photo {
+  width: min(96vw, 86vh);
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
+  border: 3px solid #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #3e505a;
+  position: relative;
+}
+.carte-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; /* le padding (réglé en JS) laisse la place aux bandeaux */
+  object-fit: contain; /* produit entier, sans recadrage */
+}
+.carte-photo img.plein {
+  object-fit: cover; /* photos de personnes : remplissent la carte */
+}
+/* texte posé sur la photo (ex. saveurs disponibles) */
+.saveurs {
+  position: absolute;
+  top: 16%;
+  right: 3%;
+  max-width: 46%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(62, 80, 90, 0.88);
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  text-align: left;
+}
+@media (max-width: 576px) {
+  .saveurs {
+    top: 6%;
+    right: 2%;
+    padding: 5px 8px;
+    font-size: 0.7rem;
+  }
+}
+.saveurs[hidden] {
+  display: none;
+}
+.saveurs strong {
+  display: block;
+  margin-bottom: 4px;
+}
+.saveurs ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+/* bandeau nom + fonction en haut de la photo (équipe) */
+.legende {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 14px;
+  background: rgba(62, 80, 90, 0.88);
+  color: #fff;
+  text-align: center;
+  line-height: 1.2;
+}
+.legende[hidden] {
+  display: none;
+}
+.legende strong {
+  display: block;
+  font-size: 1.4rem;
+}
+.legende span {
+  font-size: 1rem;
+}
+
+/* ===== Mini-carrousel de produits (dans le zoom) ===== */
+/* le zoom est plus haut quand il contient le mini-carrousel */
+.gros-plan:has(.mini-scene) {
+  height: min(82vh, 580px);
+}
+/* espaces souples : centrent le carrousel entre le titre et le bouton ✕ */
+.mini-vide {
+  flex: 1 1 0;
+}
+.mini-scene {
+  /* taille de la carte : suit la hauteur de l'écran (min 190 px, max 270 px) */
+  height: clamp(190px, calc(min(82vh, 580px) - 340px), 270px);
+  aspect-ratio: 9 / 10;
+  margin: 28px auto 10px;
+  perspective: 600px;
+  flex: none;
+}
+.mini-anneau {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+.mini-carte {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  background: #3e505a;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1.15;
+  text-align: center;
+  backface-visibility: hidden;
+  cursor: pointer;
+}
+.mini-carte img {
+  width: 72%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.mini-carte img.portrait {
+  border-radius: 50%;
+}
+/* pictogramme (icône 48 px) : affiché à sa vraie taille pour rester net.
+   Pour l'agrandir sans flou, utiliser une image source plus grande (ex. 128 px)
+   puis augmenter width et height ci-dessous. */
+.mini-carte img.pictogramme {
+  width: 48px;
+  height: 48px;
+  aspect-ratio: auto;
+  object-fit: contain;
+  border-radius: 0;
+  filter: drop-shadow(0 0 0.5px #fff) drop-shadow(0 0 0.5px #fff);
+}
+.mini-carte small {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+/* bouton « retour » d'une sous-liste (ex. Conserves -> Épicerie) */
+.retour {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 4px 12px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  background: #3e505a;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 2;
+}
+.mini-commandes {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
+  flex: none;
+}
+.mini-commandes button {
+  width: 44px;
+  height: 44px;
+  font-size: 1.6rem;
+  line-height: 1;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #3e505a;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* barre prix + « Ajouter au panier » en bas de la photo d'un produit */
+.achat {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 88px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  display: grid;
+  grid-template-columns: 1fr 64px 1fr; /* la colonne du milieu laisse la place au bouton ✕ */
+  align-items: center;
+  background: rgba(62, 80, 90, 0.88);
+  color: #fff;
+}
+.achat[hidden] {
+  display: none;
+}
+.achat-prix {
+  justify-self: start;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.achat-lien {
+  grid-column: 3;
+  justify-self: end;
+  padding: 8px 12px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  background: #3e505a;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  text-decoration: none;
+}
+.achat-lien:hover {
+  background: #fff;
+  color: #3e505a;
+}
+
+/* Carte privilège (zoom Essence) */
+.privilege {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  text-align: left;
+}
+.privilege img {
+  width: 45%;
+  max-width: 220px;
+  height: auto;
+}
+.privilege p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+@media (max-width: 576px) {
+  .privilege {
+    flex-direction: column;
+    text-align: center;
+  }
+  .privilege p {
+    order: -1;
+  }
+  .privilege img {
+    width: 50%;
+  }
+}
+
+/* ===== Boutons de la barre du haut, dans le style du carrousel ===== */
+
+.navbar .btn {
+  /* Bootstrap lit ces variables pour dessiner chaque bouton */
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #3e505a;
+  --bs-btn-border-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #3e505a;
+  --bs-btn-hover-border-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #3e505a;
+  --bs-btn-active-border-color: #fff;
+  --bs-btn-border-width: 3px;
+  --bs-btn-border-radius: 16px;
+  --bs-btn-padding-x: 14px;
+  --bs-btn-padding-y: 6px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Le panier et la recherche : boutons ronds, juste l'icône */
+.navbar #cartButton,
+.navbar #headerSearchForm .btn,
+.navbar #headerSearchToggle {
+  --bs-btn-border-radius: 50%;
+  --bs-btn-padding-x: 0;
+  --bs-btn-padding-y: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Champ de recherche assorti */
+.navbar #headerSearchInput {
+  height: 44px;
+  border: 3px solid #fff;
+  border-radius: 16px;
+  background: #3e505a;
+  color: #fff;
+  font-family: "Nunito", sans-serif;
+}
+.navbar #headerSearchInput::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Moins serrés sur petits écrans */
+.navbar .container > .d-flex {
+  flex-wrap: wrap;
+  gap: 10px !important;
+}
+
+.navbar.bg-dark {
+  background-color: #3e505a !important;
+}
+
+/* ===== RESPONSIVE : petits écrans (téléphone) ===== */
+
+/* Header : tout centré (logo, puis boutons sur une ou deux lignes) */
+@media (max-width: 767px) {
+  .navbar .container {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+  }
+  .navbar .navbar-brand {
+    margin: 0;
+  }
+  .navbar .container > .d-flex {
+    justify-content: center;
+  }
+}
+
+/* Scène : moins d'espace au-dessus pour que les boutons ‹ › restent visibles */
+@media (max-width: 767px), (max-height: 820px) {
+  h2 {
+    margin-top: 24px;
+    padding: 8px 16px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Formulaire « Créer un profil » : tient dans l'écran et défile si besoin */
+@media (max-width: 767px) {
+  /* le menu se place sous le header, centré, quelle que soit la taille de l'écran */
+  .navbar .dropdown {
+    position: static;
+  }
+  .navbar .dropdown-menu {
+    position: absolute !important;
+    inset: auto !important;
+    top: 100% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: min(340px, calc(100vw - 16px));
+    min-width: 0 !important;
+    max-height: calc(100vh - 235px);
+    max-height: calc(100dvh - 235px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .navbar .dropdown-menu .form-label {
+    font-size: 0.8rem;
+  }
+  .navbar .dropdown-menu .row {
+    --bs-gutter-x: 0.5rem;
+    --bs-gutter-y: 0.4rem;
+  }
+}
+
+/* ===== Page Boucherie et charcuterie : carrousel au centre de la page ===== */
+main.produits {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+}
+.gros-plan.en-page {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  margin: 0 auto;
+  height: auto !important; /* la boîte s'ajuste à son contenu */
+  padding-bottom: 20px;
+}
+/* bouton « Accueil » : sous les flèches ‹ › */
+.gros-plan.en-page .retour {
+  position: static;
+  display: inline-block;
+  margin-top: 14px;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  flex: none;
+}
+.gros-plan.en-page .titre-page {
+  margin-top: 18px;
+  font-weight: 700;
+}
