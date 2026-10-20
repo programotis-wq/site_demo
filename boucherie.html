@@ -118,7 +118,7 @@
       }
 
       /* construit le carrousel dans la page */
-      grosPlan.innerHTML = '<div class="titre-page">Boucherie et charcuterie</div>' + miniCarrousel(produits) + '<a class="retour" href="index.html">Accueil</a>';
+      grosPlan.innerHTML = '<div class="titre-page">Boucherie et charcuterie</div>' + miniCarrousel(produits) + '<a class="retour" href="test.html">Accueil</a>';
       placerMini();
       tournerMini();
       window.addEventListener("resize", function () { placerMini(); tournerMini(); });
@@ -329,7 +329,7 @@
 
         form.addEventListener("input", validateCustom);
 
-        /* ===== B4 : envoi du formulaire au serveur (POST http://localhost:3000/clients) ===== */
+        /* ===== B4 : envoi du formulaire au serveur (POST http://localhost:3001/clients) ===== */
         form.addEventListener("submit", async (event) => {
           event.preventDefault();
           validateCustom();
@@ -344,7 +344,7 @@
           delete data.confirmPassword;
 
           try {
-            const response = await fetch("http://localhost:3000/clients", {
+            const response = await fetch("http://localhost:3001/clients", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(data),

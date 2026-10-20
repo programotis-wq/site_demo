@@ -1,0 +1,67 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>conditions_utilisation</title>
+
+  <link rel="stylesheet" href="style.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <!-- Google Font (optionnel) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Story+Script:wght@400&display=swap" />
+
+  
+</head>
+
+<body>
+  <!-- Header minimal -->
+  <nav class="navbar navbar-dark bg-dark border-bottom sticky-top">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a href="index.html" class="navbar-brand d-flex align-items-center gap-2">
+        <span class="logo-text text-light">Dépanneur du Lac‑Moustique</span>
+      </a>
+      <a href="index.html" class="btn btn-outline-light">Retour au site</a>
+    </div>
+  </nav>
+
+  <!-- Contenu -->
+  <main class="container py-4">
+    <h4 class="text-center mt-3">Conditions d’utilisation</h4>
+    <p class="text-center fst-italic fw-bold">
+      Site de démonstration – Dépanneur du Lac‑Moustique <br>
+      Dernière mise à jour : Janvier 2026
+    </p>
+
+    <!-- … (ton contenu des conditions, inchangé) … -->
+
+    <p class="fst-italic fw-bold">
+      En cochant cette case, j’atteste avoir lu et accepté les conditions d’utilisation du site, lequel est destiné uniquement à des fins de démonstration.
+    </p>
+
+    <!-- Case à cocher : déclenche ouverture dropdown + coche auto 'J'accepte' sur index.html -->
+    <div class="conditions my-4">
+      <label>
+        <input type="checkbox" id="acceptConditions">
+        <span>J’ai lu et j’accepte les conditions ci‑dessus.</span>
+      </label>
+    </div>
+
+    <h6>⚠️ Avis important</h6>
+    <p>Ces conditions d’utilisation sont fournies à titre d’exemple pour un site de démonstration et ne constituent pas un avis juridique.</p>
+  </main>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Tout le JS du site -->
+  <script src="script.js"></script>
+
+  <!-- Ton script d'auth (si nécessaire) -->
+  <script src="/js/login.js" defer></script>
+ 
+</body>
+</html>

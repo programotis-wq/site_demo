@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Magasin</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <!-- Google Font (optionnel) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Story+Script:wght@400&display=swap" />
+
+
+</head>
+
+<body>
+
+  <!-- ===== Header foncé ===== -->
+  <nav class="navbar navbar-dark bg-dark border-bottom sticky-top">
+    <div class="container d-flex align-items-center justify-content-between">
+      <!-- Logo + nom du site -->
+      <a href="index.html" class="navbar-brand d-flex align-items-center gap-2">
+        <!-- <img src="image/lac-moustique.png" alt="Logo" class="logo-nav"> -->
+        <span class="logo-text text-light">Dépanneur du Lac‑Moustique</span>
+      </a>
+
+      <!-- Actions à droite : recherche + panier + dropdown + menu -->
+      <div class="d-flex align-items-center gap-3">
+
+        <!-- Barre de recherche -->
+        <form id="headerSearchForm" class="d-none d-sm-flex" role="search" style="max-width: 320px;">
+          <label for="headerSearchInput" class="visually-hidden">Recherche</label>
+          <input id="headerSearchInput" class="form-control form-control-sm" type="search"
+                 placeholder="Rechercher…" aria-label="Recherche" autocomplete="off" />
+          <button class="btn btn-sm btn-outline-light ms-2" type="submit" aria-label="Rechercher">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+
+        <!-- Icône seule sur mobile -->
+        <button id="headerSearchToggle" class="btn btn-outline-light d-sm-none" type="button" aria-label="Ouvrir la recherche">
+          <i class="bi bi-search"></i>
+        </button>
+
+        <!-- Panier -->
+        <button id="cartButton" class="btn btn-dark position-relative" aria-label="Voir le panier" onclick="location.hash='#panier';">
+          <i class="bi bi-cart-fill fs-5 text-light"></i>
+          <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                aria-live="polite" aria-label="0 article dans le panier">
+            0 <span class="visually-hidden">articles dans le panier</span>
+          </span>
+        </button>
+
+        <!-- Créer un profil : menu déroulant avec formulaire -->
+        <div class="dropdown">
+          <button class="btn btn-outline-light d-inline-flex align-items-center gap-2 dropdown-toggle"
+                  type="button" id="createProfileDropdown" data-bs-toggle="dropdown"
+                  aria-expanded="false" aria-haspopup="true">
+            <i class="bi bi-person-plus"></i>
+            <span>Créer un profil</span>
+          </button>
+
+          <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="createProfileDropdown" style="min-width: 320px;">
+            <form id="createProfileForm" novalidate>
+              <div class="row g-2">
+                <div class="col-12 col-sm-6">
+                  <label for="firstName" class="form-label mb-0">Prénom</label>
+                  <input type="text" class="form-control form-control-sm" id="firstName" name="firstName" required />
+                  <div class="invalid-feedback">Prénom requis.</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <label for="lastName" class="form-label mb-0">Nom</label>
+                  <input type="text" class="form-control form-control-sm" id="lastName" name="lastName" required />
+                  <div class="invalid-feedback">Nom requis.</div>
+                </div>
+                <div class="col-12">
+                  <label for="email" class="form-label mb-0">Courriel</label>
+                  <input type="email" class="form-control form-control-sm" id="email" name="email" required />
+                  <div class="invalid-feedback">Courriel valide requis.</div>
+                </div>
+                <div class="col-12">
+                  <label for="phone" class="form-label mb-0">Téléphone (optionnel)</label>
+                  <input type="tel" class="form-control form-control-sm" id="phone" name="phone" inputmode="tel" />
+                </div>
+                <div class="col-12">
+                  <label for="password" class="form-label mb-0">Mot de passe</label>
+                  <input type="password" class="form-control form-control-sm" id="password" name="password" minlength="6" required />
+                   <label for="password" class="form-label mb-0">Confirmer le mot de passe</label>
+                  <input type="password" class="form-control form-control-sm" id="password" name="password" minlength="6" required />
+                  <div class="invalid-feedback">6 caractères minimum.</div>
+                </div>
+                <div class="col-12">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required />
+                    <label class="form-check-label" for="terms">
+                      J’accepte les <a id="termsLink" href="conditions_utilisation.html">conditions d’utilisation</a>
+                    </label>
+                    <div class="invalid-feedback">Veuillez accepter les conditions.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="dropdown">Annuler</button>
+                <button type="submit" class="btn btn-success btn-sm">Créer mon profil</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Se connecter (ouvre le modal) -->
+        <button class="btn btn-outline-light d-inline-flex align-items-center gap-2"
+                type="button" data-bs-toggle="modal" data-bs-target="#loginModal"
+                aria-label="Se connecter" data-login-btn>
+          <i class="bi bi-person-circle"></i>
+          <span>Se connecter</span>
+        </button>
+
+        <!-- Se déconnecter (caché par défaut, affiché après login) -->
+        <button id="logoutBtn" class="btn btn-outline-light d-inline-flex align-items-center gap-2 d-none"
+                type="button" aria-label="Se déconnecter">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Se déconnecter</span>
+        </button>
+
+        <!-- Menu hamburger (offcanvas) -->
+        <button class="btn btn-outline-light d-inline-flex align-items-center gap-2" type="button"
+                data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu"
+                aria-label="Ouvrir le menu">
+          <i class="bi bi-list fs-5"></i><span>Menu</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Offcanvas clair ===== -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasMenuLabel" class="offcanvas-title">Navigation</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a href="index.html" class="btn btn-outline-dark d-inline-flex align-items-center gap-2" aria-label="Accueil">
+            <i class="bi bi-house"></i><span>Accueil</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#magasin" class="btn btn-outline-dark d-inline-flex align-items-center gap-2 mt-2" aria-label="Accéder au magasin">
+            <i class="bi bi-shop"></i><span>Nos produits</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#magasin" class="btn btn-outline-dark d-inline-flex align-items-center gap-2 mt-2">
+            <i class="bi bi-people mt-2"></i><span>Notre équipe</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#magasin" class="btn btn-outline-dark d-inline-flex align-items-center gap-2 mt-2">
+            <i class="bi bi-envelope"></i><span>Contact</span>
+          </a>
+        </li>
+      </ul>
+
+      <hr class="my-3" />
+
+      <!-- Recherche (optionnel) -->
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche" />
+        <button class="btn btn-primary" type="submit" aria-label="Rechercher"><i class="bi bi-search"></i></button>
+      </form>
+
+      <!-- Se connecter (ouvre le même modal) -->
+      <button class="btn btn-outline-dark d-inline-flex align-items-center gap-2 mt-3" type="button"
+              data-bs-toggle="modal" data-bs-target="#loginModal" aria-label="Se connecter" data-login-btn>
+        <i class="bi bi-person-circle"></i><span>Se connecter</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== Contenu principal ===== -->
+  <main class="container py-4">
+    <!-- Heures d’ouverture -->
+    <section id="accueil" class="mb-5 text-center">
+      <h1 class="site-title h4 mb-2 d-flex justify-content-center align-items-center gap-2">
+        <i class="bi bi-clock text-primary"></i> Heures d’ouverture
+      </h1>
+
+      <!-- Statut ouvert/fermé -->
+      <div id="openStatus" class="badge rounded-pill px-3 py-2 mb-3 bg-secondary text-light"></div>
+
+      <!-- Horaires -->
+      <div class="card shadow-sm mx-auto mb-3 card-horaire">
+        <!-- <img src="image/lac-moustique.png" alt="Logo du site" class="logo-lac"> -->
+        <div class="card-body m-0">
+          <ul class="list-unstyled m-0 text-start">
+            <li class="d-flex justify-content-between"><span>Lundi – Vendredi</span><strong>06:00 – 22:00</strong></li>
+            <li class="d-flex justify-content-between"><span>Samedi</span><strong>07:00 – 22:00</strong></li>
+            <li class="d-flex justify-content-between"><span>Dimanche</span><strong>07:00 – 21:00</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!--Cartes produits-->
+   <div class="row justify-content-center g-3 services-logos">
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center d-flex flex-column align-items-center">
+                <img src="iconesClick/vin.png" alt="Vins" class="logo">
+                <h5 class="card-title mb-1">Vins</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center d-flex flex-column align-items-center">
+                <img src="iconesClick/spiritueux.png" alt="Spiritueux" class="logo">
+                <h5 class="card-title mb-1">Spiritueux</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+    <p class="card-text" mt-4>Ces sections seront Bientôt disponnible.</p>
+
+</div>
+                
+    </section>
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="py-4 bg-light border-top">
+    <div class="container text-center">
+      <small>&copy; 2026 Dépanneur du Lac‑Moustique. Tous droits réservés.</small>
+    </div>
+  </footer>
+
+  <!-- ===== Modal de connexion ===== -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="loginModalLabel" class="modal-title">Se connecter</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <form id="loginForm" novalidate>
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label mb-0">Courriel</label>
+              <input type="email" class="form-control" id="loginEmail" required />
+              <div class="invalid-feedback">Courriel valide requis.</div>
+            </div>
+            <div class="mb-3">
+             
+               <label for="loginPassword" class="form-label mb-0">Mot de passe</label>
+              <input type="password" class="form-control" id="loginPassword" minlength="6" required />
+              <div class="invalid-feedback">Mot de passe requis (6 caractères minimum).</div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+              <button type="submit" class="btn btn-primary">Se connecter</button>
+            </div>
+          </form>
+          <div id="loginError" class="text-danger small mt-2 d-none">Identifiants invalides.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Tout le JS du site -->
+  <script src="script.js"></script>
+
+  <!-- Ton script d'auth (si nécessaire) -->
+  <script src="/js/login.js" defer></script>
+  
+</body>
+</html>
