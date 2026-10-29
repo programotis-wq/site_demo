@@ -27,6 +27,13 @@ Le client remplit le formulaire « Créer un profil ». À l'envoi, le widget v�
 
 Les fichiers nécessaires à l'installation et la procédure sont disponibles sur demande.
 
+## Évolution
+
+Le projet est en développement continu.
+
+## Auteur
+
+
 ## Auteur
 
 Sylvain Otis
