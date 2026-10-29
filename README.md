@@ -31,8 +31,6 @@ Les fichiers nécessaires à l'installation et la procédure sont disponibles su
 
 Le projet est en développement continu.
 
-## Auteur
-
 
 ## Auteur
 
