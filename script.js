@@ -27,8 +27,9 @@ function isOpenNow(date = new Date()) {
   const current = date.getHours() * 60 + date.getMinutes();
   const slots = schedule[day] || [];
   return slots.some(({ start, end }) => {
-    const s = toMinutes(start), e = toMinutes(end);
-    return e > s ? (current >= s && current < e) : (current >= s || current < e);
+    const s = toMinutes(start),
+      e = toMinutes(end);
+    return e > s ? current >= s && current < e : current >= s || current < e;
   });
 }
 
@@ -76,14 +77,17 @@ function updateCartBadge() {
   if (!badge) return;
   const count = getCartCount();
   badge.textContent = count > 99 ? "99+" : String(count);
-  badge.setAttribute("aria-label", `${count} article${count > 1 ? "s" : ""} dans le panier`);
+  badge.setAttribute(
+    "aria-label",
+    `${count} article${count > 1 ? "s" : ""} dans le panier`,
+  );
   badge.classList.toggle("hidden", count === 0);
 }
 
 /* ========== Formulaire "Créer un profil" : persistance du brouillon ========== */
-const PROFILE_LS_KEY = "createProfileData";  // brouillon du formulaire
-const OPEN_KEY = "openCreateProfile";        // réouvrir le dropdown au retour des conditions
-const TERMS_KEY = "acceptedTerms";           // cocher "J'accepte" au retour (posé par conditions)
+const PROFILE_LS_KEY = "createProfileData"; // brouillon du formulaire
+const OPEN_KEY = "openCreateProfile"; // réouvrir le dropdown au retour des conditions
+const TERMS_KEY = "acceptedTerms"; // cocher "J'accepte" au retour (posé par conditions)
 
 function initCreateProfileForm() {
   const dropdownToggle = document.getElementById("createProfileDropdown");
@@ -107,7 +111,9 @@ function initCreateProfileForm() {
     if (phone && saved.phone) phone.value = saved.phone;
     if (password && saved.password) password.value = saved.password;
     if (terms && typeof saved.terms === "boolean") terms.checked = saved.terms;
-  } catch (_) { /* brouillon absent ou invalide : on ignore */ }
+  } catch (_) {
+    /* brouillon absent ou invalide : on ignore */
+  }
 
   // Persistance du brouillon à chaque changement
   const persist = () => {
@@ -130,10 +136,14 @@ function initCreateProfileForm() {
 
   // Clic sur le lien des conditions : garder le brouillon et indiquer la réouverture
   if (termsLink) {
-    termsLink.addEventListener("click", () => {
-      persist();
-      localStorage.setItem(OPEN_KEY, "1");
-    }, { passive: true });
+    termsLink.addEventListener(
+      "click",
+      () => {
+        persist();
+        localStorage.setItem(OPEN_KEY, "1");
+      },
+      { passive: true },
+    );
   }
 
   // Au retour depuis la page conditions
@@ -172,8 +182,11 @@ function initAuth() {
   const loginError = document.getElementById("loginError");
 
   const getProfile = () => {
-    try { return JSON.parse(localStorage.getItem(PROFILE_LS_KEY) || "{}"); }
-    catch (e) { return {}; }
+    try {
+      return JSON.parse(localStorage.getItem(PROFILE_LS_KEY) || "{}");
+    } catch (e) {
+      return {};
+    }
   };
   const isAuthenticated = () => !!localStorage.getItem("userToken");
 
@@ -206,9 +219,11 @@ function initAuth() {
       loginForm.classList.add("was-validated");
       if (!loginForm.checkValidity()) return;
       const profile = getProfile();
-      const ok = profile.email && profile.password &&
-                 profile.email.trim() === loginEmail.value.trim() &&
-                 profile.password === loginPassword.value;
+      const ok =
+        profile.email &&
+        profile.password &&
+        profile.email.trim() === loginEmail.value.trim() &&
+        profile.password === loginPassword.value;
       if (ok) {
         localStorage.setItem("userToken", "demo-token-" + Date.now());
         if (loginError) loginError.classList.add("d-none");
@@ -216,7 +231,8 @@ function initAuth() {
         modal.hide();
         updateAuthUI();
       } else if (loginError) {
-        loginError.textContent = "Identifiants invalides. Créez d'abord votre profil ou vérifiez votre courriel/mot de passe.";
+        loginError.textContent =
+          "Identifiants invalides. Créez d'abord votre profil ou vérifiez votre courriel/mot de passe.";
         loginError.classList.remove("d-none");
       }
     });
@@ -248,19 +264,36 @@ function initConditionsPage() {
 }
 
 // =========================================================
-// Effet d'eau du logo — Dépanneur du Lac-Moustique
-// Ordinateur : ondes au passage de la souris + onde concentrique au clic
-// Mobile     : des gouttes tombent toutes seules, en boucle
+// Effet d'eau — Dépanneur du Lac-Moustique
+// Ordinateur : ondes qui suivent le curseur sur toute la page
+//              + onde concentrique au clic sur le logo
+// Mobile     : des gouttes tombent toutes seules sur le logo, en boucle
 // =========================================================
 (() => {
   const logo = document.querySelector(".logo-text");
-  if (!logo) return;
 
   // Moins d'animations demandées : on ne fait rien
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  // Crée une onde à la position (x, y) du logo
-  function creerOnde(x, y, { taille, epaisseur, force, duree, delai = 0 }) {
+  // Couche fixe qui couvre toute la fenêtre (créée au premier besoin)
+  let couche = null;
+  function obtenirCouche() {
+    if (!couche) {
+      couche = document.createElement("div");
+      couche.className = "couche-ondes";
+      couche.setAttribute("aria-hidden", "true");
+      document.body.appendChild(couche);
+    }
+    return couche;
+  }
+
+  // Crée une onde à la position (x, y) à l'intérieur de "conteneur"
+  function creerOnde(
+    conteneur,
+    x,
+    y,
+    { taille, epaisseur, force, duree, delai = 0 },
+  ) {
     const onde = document.createElement("span");
     onde.className = "onde";
     onde.setAttribute("aria-hidden", "true");
@@ -272,51 +305,113 @@ function initConditionsPage() {
     onde.style.setProperty("--duree", duree + "s");
     onde.style.setProperty("--delai", delai + "s");
     onde.addEventListener("animationend", () => onde.remove());
-    logo.appendChild(onde);
+    conteneur.appendChild(onde);
   }
 
   // Trois ondes concentriques, de plus en plus faibles
-  function goutte(x, y, tailleMax) {
-    creerOnde(x, y, { taille: tailleMax,        epaisseur: 2.5, force: 1,    duree: 1.8 });
-    creerOnde(x, y, { taille: tailleMax * 0.75, epaisseur: 2,   force: 0.85, duree: 1.8, delai: 0.18 });
-    creerOnde(x, y, { taille: tailleMax * 0.5,  epaisseur: 1.5, force: 0.7,  duree: 1.8, delai: 0.36 });
+  function goutte(conteneur, x, y, tailleMax) {
+    creerOnde(conteneur, x, y, {
+      taille: tailleMax,
+      epaisseur: 2.5,
+      force: 1,
+      duree: 1.8,
+    });
+    creerOnde(conteneur, x, y, {
+      taille: tailleMax * 0.75,
+      epaisseur: 2,
+      force: 0.85,
+      duree: 1.8,
+      delai: 0.18,
+    });
+    creerOnde(conteneur, x, y, {
+      taille: tailleMax * 0.5,
+      epaisseur: 1.5,
+      force: 0.7,
+      duree: 1.8,
+      delai: 0.36,
+    });
   }
 
   const sansSurvol = window.matchMedia("(hover: none)").matches;
 
   if (sansSurvol) {
-    // ===== MOBILE : boucle automatique =====
+    // ===== MOBILE : boucle automatique sur le logo =====
+    if (!logo) return;
+
     function prochaineGoutte() {
-      if (!document.hidden) {                       // pause quand l'onglet est caché (batterie)
-        const L = logo.offsetWidth, H = logo.offsetHeight;
+      if (!document.hidden) {
+        // pause quand l'onglet est caché (batterie)
+        const L = logo.offsetWidth,
+          H = logo.offsetHeight;
         const x = L * (0.08 + Math.random() * 0.84);
         const y = H * (0.35 + Math.random() * 0.3);
         if (Math.random() < 0.33) {
-          goutte(x, y, 120);                        // une goutte plus franche
+          goutte(logo, x, y, 120); // une goutte plus franche
         } else {
-          creerOnde(x, y, { taille: 70, epaisseur: 2, force: 0.8, duree: 1.4 });
+          creerOnde(logo, x, y, {
+            taille: 70,
+            epaisseur: 3,
+            force: 0.8,
+            duree: 1.4,
+          });
         }
       }
-      setTimeout(prochaineGoutte, 900 + Math.random() * 900);   // intervalle irrégulier, plus naturel
+      setTimeout(prochaineGoutte, 900 + Math.random() * 900); // intervalle irrégulier, plus naturel
     }
     prochaineGoutte();
   } else {
-    // ===== ORDINATEUR : survol et clic =====
+    // ===== ORDINATEUR : ondes qui suivent le curseur sur toute la page =====
     let dernierePosition = null;
 
-    logo.addEventListener("mousemove", (e) => {
-      const zone = logo.getBoundingClientRect();
-      const x = e.clientX - zone.left, y = e.clientY - zone.top;
-      if (dernierePosition && Math.hypot(x - dernierePosition.x, y - dernierePosition.y) < 18) return;
+    document.addEventListener("mousemove", (e) => {
+      const x = e.clientX,
+        y = e.clientY; // position dans la fenêtre
+      if (
+        dernierePosition &&
+        Math.hypot(x - dernierePosition.x, y - dernierePosition.y) < 18
+      )
+        return;
       dernierePosition = { x, y };
-      creerOnde(x, y, { taille: 64, epaisseur: 2, force: 0.85, duree: 1.1 });
+      creerOnde(obtenirCouche(), x, y, {
+        taille: 64,
+        epaisseur: 3,
+        force: 0.85,
+        duree: 1.1,
+      });
     });
-    logo.addEventListener("mouseleave", () => { dernierePosition = null; });
+    document.documentElement.addEventListener("mouseleave", () => {
+      dernierePosition = null;
+    });
 
-    logo.addEventListener("click", (e) => {
-      const zone = logo.getBoundingClientRect();
-      goutte(e.clientX - zone.left, e.clientY - zone.top, 260);
-    });
+    // Clic : onde concentrique, toujours sur le logo
+    if (logo) {
+      logo.addEventListener("click", (e) => {
+        const zone = logo.getBoundingClientRect();
+        // Trois ondes concentriques, de plus en plus faibles
+        function goutte(conteneur, x, y, tailleMax) {
+          creerOnde(conteneur, x, y, {
+            taille: tailleMax,
+            epaisseur: 3.5,
+            force: 1,
+            duree: 1.8,
+          });
+          creerOnde(conteneur, x, y, {
+            taille: tailleMax * 0.75,
+            epaisseur: 3,
+            force: 0.85,
+            duree: 1.8,
+            delai: 0.18,
+          });
+          creerOnde(conteneur, x, y, {
+            taille: tailleMax * 0.5,
+            epaisseur: 2.5,
+            force: 0.7,
+            duree: 1.8,
+            delai: 0.36,
+          });
+        }
+      });
+    }
   }
 })();
 /* ========== Point d'entrée : tout s'initialise une fois la page chargée ========== */
@@ -337,4 +432,3 @@ if (document.readyState === "loading") {
 } else {
   demarrer();
 }
-

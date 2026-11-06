@@ -27,8 +27,17 @@ h1.site-title {
   white-space: nowrap;
 }
 
+.titreIndex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 h2 {
   letter-spacing: 0.2px;
+  background-color: rgba(0, 0, 0, 0.616);
+  width: fit-content;
+  border-radius: 10px;
 }
 
 /* ========== 2. Header / Navbar ========== */
@@ -274,18 +283,34 @@ ol li {
   border-radius: 50%;
   border: var(--epaisseur) solid;
 }
+
+/* Couche qui contient les ondes qui suivent le curseur sur toute la page */
+.couche-ondes {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 9999;
+}
+
 /* Flanc ombré, décalé vers le bas */
+/* Flanc ombré, décalé vers le bas : très discret */
+/* Flanc ombré, décalé vers le bas : très discret */
 .onde::before {
-  border-color: rgba(4, 12, 20, calc(var(--force) * .85));
+  border-color: rgba(4, 12, 20, calc(var(--force) * .15));
   transform: translate(1px, 3px);
   filter: blur(.7px);
 }
-/* Crête éclairée, décalée vers le haut */
+
+/* Crête éclairée, décalée vers le haut : semi-transparente, avec un léger dôme */
 .onde::after {
-  border-color: rgba(225, 245, 255, var(--force));
+  border-color: rgba(225, 245, 255, calc(var(--force) * .22));
+  background: radial-gradient(circle,
+    rgba(225, 245, 255, 0) 55%,
+    rgba(225, 245, 255, calc(var(--force) * .06)) 100%);
   transform: translate(-1px, -2px);
   filter: blur(.3px);
-  box-shadow: 0 0 5px rgba(150, 210, 255, calc(var(--force) * .5));
+  box-shadow: 0 0 5px rgba(150, 210, 255, calc(var(--force) * .1));
 }
 
 @keyframes onde-sepropager {
