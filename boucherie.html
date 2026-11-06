@@ -13,20 +13,34 @@
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
    <link rel="stylesheet" href="barre.css" />
     <link rel="stylesheet" href="styles.css" />
-    <style>
-      :root {
-        --fond-photo: url("image/boucherie.png");
-      }
-    </style>
   </head>
   <body>
 
     <!-- ===== En-tête commun : chargé depuis entete.html par entete.js ===== -->
     <div id="entete"></div>
 
-    <!-- ===== Carrousel des produits : au centre de la page ===== -->
+    <!-- ===== Contenu de la page : la photo du rayon avec zones cliquables viendra ici ===== -->
     <main class="produits">
-      <div class="gros-plan en-page" id="grosPlan"></div>
+      <div class="rayon" id="rayon">
+        <img class="rayon-photo" src="image/boucherie_charcuterie.png" alt="Rayon de boucherie et charcuterie" />
+        <!-- Zones cliquables : le viewBox doit rester égal à la taille de la photo (1536 x 864) -->
+        <svg class="rayon-zones" viewBox="0 0 1536 864" preserveAspectRatio="none" role="group" aria-label="Catégories du rayon">
+          <a class="zone" href="#" data-nom="Coupe de boeuf" aria-label="Zone 1"><path d="M 1.9641944,423.28389 70.710997,307.39642 370.25064,306.41432 329.00256,489.0844 -2.9462916,483.19182 Z" /></a>
+          <a class="zone" href="#" data-nom="Boeuf haché" aria-label="Zone 2"><path d="M 0.98209719,492.03069 329.00256,493.99488 287.75448,666.84399 -0.98209719,663.8977 Z" /></a>
+          <a class="zone" href="#" data-nom="Cotelette de porc" aria-label="Zone 3"><path d="m 394.80307,296.59335 -22.58824,105.0844 h 263.20205 l 6.87468,-103.12021 z" /></a>
+          <a class="zone" href="#" data-nom="Filet de porc" aria-label="Zone 4"><path d="m 371.23274,405.60614 -27.49872,113.92327 288.73657,4.91049 2.94629,-117.85166 z" /></a>
+          <a class="zone" href="#" data-nom="Roti de porc" aria-label="Zone 5"><path d="M 342.75192,530.33248 317.21739,663.8977 623.63171,662.9156 628.5422,533.27877 Z" /></a>
+          <a class="zone" href="#" data-nom="Cuisses de poulet" aria-label="Zone 6"><path d="m 657.02302,300.52174 -2.94629,100.17391 281.86189,2.94629 -14.73146,-100.17391 z" /></a>
+          <a class="zone" href="#" data-nom="Poitrines de poulet désossées" aria-label="Zone 7"><path d="m 654.07673,405.60614 -5.89259,118.83376 168.92072,3.92839 -1.9642,-120.79796 z" /></a>
+          <a class="zone" href="#" data-nom="Haut de cuisse désossé" aria-label="Zone 8"><path d="M 646.21995,534.26087 641.30946,663.8977 H 825.94373 L 817.10486,532.29668 Z" /></a>
+          <a class="zone" href="#" data-nom="Poulet entier" aria-label="Zone 9"><path d="m 822.01535,411.49872 5.89258,253.38108 h 138.4757 L 934.95652,407.57033 Z" /></a>
+          <a class="zone" href="#" data-nom="Saucissons" aria-label="Zone 10"><path d="m 941.8312,301.50384 12.76727,105.0844 262.21993,-0.9821 -28.4808,-109.01279 z" /></a>
+          <a class="zone" href="#" data-nom="Mortadelle" aria-label="Zone 11"><path d="m 955.58056,408.55243 10.80307,87.40665 271.05887,1.96419 -23.5704,-89.37084 z" /></a>
+          <a class="zone" href="#" data-nom="Pépéroni tranché et Therrine maison" aria-label="Zone 12"><path d="m 974.24041,582.38363 10.80307,88.38875 294.62912,-6.87468 -29.4629,-84.46036 z" /></a>
+          <a class="zone" href="#" data-nom="Filet de truite Arc-en-ciel" aria-label=""><path d="m 1206.9974,299.53964 92.3172,376.14322 h 234.7212 L 1536,406.58824 1477.0742,303.46803 Z" /></a>
+        </svg>
+        <div class="rayon-etiquette" id="rayonEtiquette" hidden></div>
+      </div>
     </main>
 
     <!-- ===== Carte photo plein écran (s'ouvre depuis une tuile qui a une photo) ===== -->
@@ -48,80 +62,45 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="entete.js"></script>
     <script>
+      /* ===== Rayon : affiche le nom de la zone au survol (ou au focus clavier) ===== */
+      (function () {
+        const rayon = document.getElementById("rayon");
+        const etiquette = document.getElementById("rayonEtiquette");
+        if (!rayon || !etiquette) return;
 
-      const grosPlan = document.getElementById("grosPlan");
-
-      /* ===== Produits de la boucherie et charcuterie =====
-         À REMPLACER par tes vrais produits : nom, prix, et le chemin de la photo
-         (icone et photo = même chemin). Ajoute ou enlève des lignes librement. */
-      const produits = [
-        { nom: "Produit 1", icone: "image/boucherie.png", photo: "image/boucherie.png", prix: "0,00 $" },
-        { nom: "Produit 2", icone: "image/boucherie.png", photo: "image/boucherie.png", prix: "0,00 $" },
-        { nom: "Produit 3", icone: "image/boucherie.png", photo: "image/boucherie.png", prix: "0,00 $" },
-        { nom: "Produit 4", icone: "image/boucherie.png", photo: "image/boucherie.png", prix: "0,00 $" },
-      ];
-
-      /* ===== A4 (outil) : état et rotation du mini-carrousel de produits ===== */
-      let miniAngle = 0; // angle actuel
-      let miniPas = 0; // angle entre deux produits (360 / nombre de produits)
-      let miniRayon = 0; // rayon de l'anneau en px
-
-      /* place chaque carte sur l'anneau selon la largeur réelle de la carte */
-      function placerMini() {
-        const scene = grosPlan.querySelector(".mini-scene");
-        if (!scene) return;
-        const cartes = grosPlan.querySelectorAll(".mini-carte");
-        const n = cartes.length;
-        const demiLargeur = scene.offsetWidth / 2;
-        /* rayon : assez grand pour que les cartes ne se chevauchent pas
-           (avec 1 ou 2 produits, les cartes tournent sur elles-mêmes) */
-        miniRayon = n < 3 ? 0 : Math.max(70, (demiLargeur + 14) / Math.tan(Math.PI / n));
-        cartes.forEach(function (c, i) {
-          c.style.transform = `rotateY(${i * miniPas}deg) translateZ(${miniRayon}px)`;
-        });
-      }
-
-      /* construit le HTML du mini-carrousel pour une liste (produits, personnes, départements)
-         Champs lus : nom, icone, photo (facultatif), prix, Fonction, saveurs, lien */
-      function miniCarrousel(liste) {
-        miniPas = 360 / liste.length;
-        miniAngle = 0;
-        let h = '<div class="mini-vide"></div>'; /* espace souple au-dessus */
-        h += '<div class="mini-scene"><div class="mini-anneau">';
-        liste.forEach(function (d) {
-          const fonction = d.Fonction || d.fonction || "";
-          let attrs = "";
-          if (d.photo) attrs += ` data-photo="${d.photo}" data-nom="${d.nom}"`;
-          if (d.prix) attrs += ` data-prix="${d.prix}"`;
-          if (fonction) attrs += ` data-fonction="${fonction}"`;
-          if (d.saveurs) attrs += ` data-saveurs="${d.saveurs.join("|")}"`;
-          if (d.sous) attrs += ` data-sous="${d.sous}" data-nom="${d.nom}" data-icone="${d.icone}"`;
-          /* vraie photo (icone = photo) : carrée, ou ronde pour une personne ;
-             sinon c'est une icône : on l'affiche à sa vraie taille, sans l'étirer */
-          const estPhoto = d.photo && d.icone === d.photo;
-          const classeImg = estPhoto ? (fonction ? "portrait" : "") : "pictogramme";
-          /* avec photo : la carte ouvre la photo ; sans photo : elle suit son lien */
-          const lien = d.photo || d.sous ? "#" : d.lien || "#";
-          h += `<a class="mini-carte" href="${lien}"${attrs}><img class="${classeImg}" src="${d.icone}" alt=""><span>${d.nom}</span>${fonction ? "<small>" + fonction + "</small>" : ""}</a>`;
-        });
-        h += "</div></div>";
-        h += '<div class="mini-vide"></div>'; /* espace souple entre la carte et les flèches */
-        h += '<div class="mini-commandes"><button type="button" class="mini-btn" data-sens="-1" aria-label="Précédent">‹</button><button type="button" class="mini-btn" data-sens="1" aria-label="Suivant">›</button></div>';
-        return h;
-      }
-
-      function tournerMini() {
-        const a = grosPlan.querySelector(".mini-anneau");
-        if (a) {
-          a.style.transform = `translateZ(-${miniRayon}px) rotateY(${miniAngle}deg)`;
+        function montrer(zone, x, y) {
+          etiquette.textContent = zone.dataset.nom;
+          etiquette.style.left = x + "px";
+          etiquette.style.top = y + "px";
+          etiquette.hidden = false;
         }
-      }
 
-      /* construit le carrousel dans la page */
-      grosPlan.innerHTML = '<div class="titre-page">Boucherie et charcuterie</div>' + miniCarrousel(produits) + '<a class="retour" href="test.html">Accueil</a>';
-      placerMini();
-      tournerMini();
-      window.addEventListener("resize", function () { placerMini(); tournerMini(); });
+        rayon.querySelectorAll(".zone").forEach(function (zone) {
+          /* souris : l'étiquette suit le curseur */
+          zone.addEventListener("mousemove", function (e) {
+            const r = rayon.getBoundingClientRect();
+            montrer(zone, e.clientX - r.left, e.clientY - r.top);
+          });
+          zone.addEventListener("mouseleave", function () {
+            etiquette.hidden = true;
+          });
+          /* clavier : l'étiquette se place au centre de la zone */
+          zone.addEventListener("focus", function () {
+            const r = rayon.getBoundingClientRect();
+            const b = zone.getBoundingClientRect();
+            montrer(zone, b.left - r.left + b.width / 2, b.top - r.top + b.height / 2);
+          });
+          zone.addEventListener("blur", function () {
+            etiquette.hidden = true;
+          });
+          /* clic : rien pour l'instant (à définir) */
+          zone.addEventListener("click", function (e) {
+            e.preventDefault();
+          });
+        });
+      })();
+    </script>
+    <script>
 
       /* ===== A6 : carte photo plein écran (clic sur une tuile qui a une photo) ===== */
 
@@ -132,69 +111,7 @@
         voilePhoto.classList.remove("visible");
       }
 
-      /* la tuile garde son lien, sauf si elle a une photo : alors on ouvre la photo */
       let produitCourant = null; // produit affiché dans la grande photo (pour « Ajouter au panier »)
-
-      grosPlan.addEventListener("click", function (e) {
-        const tuile = e.target.closest(".tuile[data-photo], .mini-carte[data-photo]");
-        if (!tuile) return;
-        e.preventDefault();
-        produitCourant = {
-          nom: tuile.dataset.nom,
-          prix: tuile.dataset.prix || "",
-          photo: tuile.dataset.photo,
-        };
-        photoGrande.src = tuile.dataset.photo;
-        photoGrande.alt = tuile.dataset.nom;
-
-        /* texte sur la photo : les saveurs, s'il y en a */
-        const boite = document.getElementById("photoSaveurs");
-        const saveurs = tuile.dataset.saveurs ? tuile.dataset.saveurs.split("|") : [];
-        if (saveurs.length) {
-          boite.innerHTML =
-            "<strong>Saveurs disponibles:</strong><ul>" +
-            saveurs.map(function (nom) {
-              return "<li>" + nom + "</li>";
-            }).join("") +
-            "</ul>";
-          boite.hidden = false;
-        } else {
-          boite.hidden = true;
-        }
-        /* bandeau nom + fonction, s'il y en a (équipe) */
-        const legende = document.getElementById("photoLegende");
-        if (tuile.dataset.fonction || tuile.classList.contains("mini-carte")) {
-          legende.innerHTML =
-            "<strong>" + tuile.dataset.nom + "</strong>" +
-            (tuile.dataset.fonction ? "<span>" + tuile.dataset.fonction + "</span>" : "");
-          legende.hidden = false;
-        } else {
-          legende.hidden = true;
-        }
-        /* barre prix + « Ajouter au panier », si le produit a un prix */
-        const achat = document.getElementById("photoAchat");
-        if (tuile.dataset.prix) {
-          document.getElementById("photoPrix").textContent = tuile.dataset.prix;
-          document.getElementById("photoAjouter").innerHTML = LABEL_AJOUT;
-          achat.hidden = false;
-        } else {
-          achat.hidden = true;
-        }
-        /* la photo : produit entier (contain) ou plein cadre pour une personne (cover),
-           et elle laisse la place aux bandeaux du haut et du bas */
-        photoGrande.className = tuile.dataset.fonction ? "plein" : "";
-        photoGrande.style.paddingTop = legende.hidden ? "0" : legende.offsetHeight + "px";
-        photoGrande.style.paddingBottom = achat.hidden ? "0" : achat.offsetHeight + "px";
-        voilePhoto.classList.add("visible");
-      });
-
-      /* boutons ‹ › du mini-carrousel de produits */
-      grosPlan.addEventListener("click", function (e) {
-        const bouton = e.target.closest(".mini-btn");
-        if (!bouton) return;
-        miniAngle -= Number(bouton.dataset.sens) * miniPas;
-        tournerMini();
-      });
 
       /* bouton « Ajouter au panier » : enregistre le produit dans le panier (ajouterAuPanier, SCRIPT 4) */
       const LABEL_AJOUT = '<i class="bi bi-cart-plus"></i> Ajouter au panier';

@@ -304,6 +304,54 @@ ol li {
   filter: blur(.7px);
 }
 
+/* ===== Page Boucherie : photo plein écran (sous l'en-tête) + zones cliquables ===== */
+.rayon {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: var(--entete-h, 58px); /* hauteur de l'en-tête, mesurée par le script de la page */
+  z-index: 1;
+  overflow: hidden;
+}
+.rayon-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* remplit tout l'écran, recadre au besoin, jamais déformée */
+}
+.rayon-zones {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.rayon-zones .zone path {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 3;
+  cursor: pointer;
+  transition: fill .2s ease, stroke .2s ease;
+}
+.rayon-zones .zone:hover path,
+.rayon-zones .zone:focus-visible path {
+  fill: rgba(255, 255, 255, .22);
+  stroke: rgba(255, 255, 255, .85);
+}
+.rayon-zones .zone:focus { outline: none; }
+.rayon-etiquette {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -140%);
+  background: rgba(0, 0, 0, .78);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  white-space: nowrap;
+  z-index: 5;
+}
+
 /* Crête éclairée, décalée vers le haut : semi-transparente, avec un léger dôme */
 .onde::after {
   border-color: rgba(225, 245, 255, calc(var(--force) * .25));
