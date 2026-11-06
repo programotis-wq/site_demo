@@ -346,10 +346,10 @@ function initConditionsPage() {
         const x = L * (0.08 + Math.random() * 0.84);
         const y = H * (0.35 + Math.random() * 0.3);
         if (Math.random() < 0.33) {
-          goutte(logo, x, y, 120); // une goutte plus franche
+          goutte(logo, x, y, 138); // une goutte plus franche
         } else {
           creerOnde(logo, x, y, {
-            taille: 70,
+            taille: 80,
             epaisseur: 3,
             force: 0.8,
             duree: 1.4,
@@ -373,7 +373,7 @@ function initConditionsPage() {
         return;
       dernierePosition = { x, y };
       creerOnde(obtenirCouche(), x, y, {
-        taille: 64,
+        taille: 74,
         epaisseur: 3,
         force: 0.85,
         duree: 1.1,
